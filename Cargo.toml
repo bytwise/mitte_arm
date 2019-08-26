@@ -1,0 +1,9 @@
+[package]
+name = "mitte_arm"
+version = "0.0.1"
+authors = ["bytewise <bytewise@fastmail.com>"]
+
+[dependencies]
+
+[dev-dependencies]
+capstone = "0.2.0"
