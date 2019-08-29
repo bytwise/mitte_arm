@@ -302,8 +302,18 @@ pub fn ldrh_imm(rt: Register, rn: Register, imm8: u8) -> [u8; 4] {
 }
 
 #[inline]
-pub fn ldrh(rt: Register, rn: Register) -> [u8; 4] {
-    encoding!(Condition::Al, u4(0b0001), u4(0b1101), rn, rt, u4(0), u4(0b1011), u4(0))
+pub fn ldrh_reg(rt: Register, rn: Register, rm: Register) -> [u8; 4] {
+    encoding!(Condition::Al, u4(0b0001), u4(0b1001), rn, rt, u4(0), u4(0b1011), rm)
+}
+
+#[inline]
+pub fn ldrsh_imm(rt: Register, rn: Register, imm8: u8) -> [u8; 4] {
+    encoding!(Condition::Al, u4(0b0001), u4(0b1101), rn, rt, u4(imm8 >> 4), u4(0b1111), u4(imm8 & 0xf))
+}
+
+#[inline]
+pub fn ldrsh_reg(rt: Register, rn: Register, rm: Register) -> [u8; 4] {
+    encoding!(Condition::Al, u4(0b0001), u4(0b1001), rn, rt, u4(0), u4(0b1111), rm)
 }
 
 #[inline]

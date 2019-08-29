@@ -202,7 +202,14 @@ fn test_ldr() {
 
 #[test]
 fn test_ldrh() {
-    test_disasm("ldrh", &["r3, [r4]"], &ldrh(R3, R4));
+    test_disasm("ldrh", &["r3, [r4, #5]"], &ldrh_imm(R3, R4, 5));
+    test_disasm("ldrh", &["r3, [r4, r5]"], &ldrh_reg(R3, R4, R5));
+}
+
+#[test]
+fn test_ldrsh() {
+    test_disasm("ldrsh", &["r3, [r4, #5]"], &ldrsh_imm(R3, R4, 5));
+    test_disasm("ldrsh", &["r3, [r4, r5]"], &ldrsh_reg(R3, R4, R5));
 }
 
 #[test]
