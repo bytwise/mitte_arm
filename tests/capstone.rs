@@ -259,3 +259,11 @@ fn test_udiv() {
 fn test_mls() {
     test_disasm("mls", &["r3, r4, r5, r6"], &mls(R3, R4, R5, R6));
 }
+
+#[test]
+fn test_udf() {
+    test_disasm("udf", &["#0x10"], &udf(16));
+    test_disasm("udf", &["#0x1234"], &udf(0x1234));
+    test_disasm("trap", &[""], &udf(0xfdee));
+    test_disasm("udf", &["#0xfdef"], &udf(0xfdef));
+}

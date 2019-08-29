@@ -484,3 +484,10 @@ pub fn udiv(rd: Register, rn: Register, rm: Register) -> [u8; 4] {
 pub fn mls(rd: Register, rn: Register, rm: Register, ra: Register) -> [u8; 4] {
     encoding!(Condition::Al, u4(0b0000), u4(0b0110), rd, ra, rm, u4(0b1001), rn)
 }
+
+#[inline]
+pub fn udf(imm16: u16) -> [u8; 4] {
+    let imm12 = (imm16 >> 4) & 0xfff;
+    let imm4 = imm16 as u8 & 0xf;
+    encoding!(u4(0b1110), u4(0b0111), u4(0b1111), u12(imm12), u4(0b1111), u4(imm4))
+}
