@@ -135,6 +135,21 @@ impl ToBits for Const {
     fn to_bits(&self) -> u32 { ((self.rotation as u32 & 0xf) << 8) | self.imm8 as u32 }
 }
 
+impl Const {
+    #[inline]
+    pub fn try_from(x: u32) -> Option<Const> {
+        (0..0x10).into_iter()
+            .map(|r| (r, x.rotate_left(2 * r)))
+            .find(|&(_, c)| c <= 0xff)
+            .map(|(rotation, imm8)| {
+                Const {
+                    imm8: imm8 as u8,
+                    rotation: rotation as u8,
+                }
+            })
+    }
+}
+
 impl From<u8> for Const {
     #[inline(always)]
     fn from(x: u8) -> Const {
@@ -148,14 +163,8 @@ impl From<u8> for Const {
 impl From<u32> for Const {
     #[inline]
     fn from(x: u32) -> Const {
-        let rot_imm = (0..0x10).into_iter()
-            .map(|r| (r, x.rotate_left(2 * r)))
-            .find(|&(_, c)| c <= 0xff);
-        if let Some((rotation, imm8)) = rot_imm {
-            Const {
-                imm8: imm8 as u8,
-                rotation: rotation as u8,
-            }
+        if let Some(c) = Const::try_from(x) {
+            c
         } else {
             #[cold]
             fn const_from_fail(x: u32) -> ! {
