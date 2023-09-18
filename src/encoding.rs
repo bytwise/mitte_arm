@@ -1,3 +1,10 @@
+#[inline]
+pub fn is_signed_nbit_integer(n: u8, value: impl Into<i64>) -> bool {
+    let value = value.into();
+    ((-1) << (n - 1)) <= value && value < (1 << (n - 1))
+}
+
+
 #[derive(Clone, Copy)]
 pub struct RegisterIndex {
     pub index: u32,
@@ -18,6 +25,7 @@ macro_rules! encode {
             $(
             bits.push($e);
             )*
+            assert_eq!(bits.shift, 0);
             bits.bits
         }
     };
@@ -60,6 +68,6 @@ macro_rules! define_bits {
 
 define_bits! {
     i1: 1, i2: 2, i3: 3, i4: 4, i5: 5, i6: 6, i7: 7, i8: 8,
-    i9: 9, i10: 10, i11: 11, i12: 12, i14: 14, i15: 15, i16: 16,
+    i9: 9, i10: 10, i11: 11, i12: 12, i13: 13, i14: 14, i15: 15, i16: 16,
     i19: 19, i24: 24, i26: 26
 }

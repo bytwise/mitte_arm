@@ -1,3 +1,19 @@
+macro_rules! forward {
+    (
+        $(
+            $method:ident($($arg:ident : $arg_ty:ty),*) => $function:ident;
+        )*
+    ) => {
+        $(
+            #[inline]
+            fn $method(&mut self $(, $arg : $arg_ty)*) -> Result<(), Self::Error>
+            {
+                self.emit_slice(&$function($($arg),*).to_le_bytes())
+            }
+        )*
+    };
+}
+
 macro_rules! functions {
     (
         $(
@@ -146,4 +162,5 @@ macro_rules! functions {
     };
 }
 
+pub(crate) use forward;
 pub(crate) use functions;

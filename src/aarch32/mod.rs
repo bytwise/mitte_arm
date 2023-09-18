@@ -1,4 +1,5 @@
 pub mod types;
+pub mod fixup;
 
 pub use self::types::*;
 
@@ -10,5 +11,5 @@ pub mod ras;
 pub mod sb;
 pub mod trf;
 
-pub(crate) mod encoding;
+mod encoding;
 mod macros;

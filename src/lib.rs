@@ -1,3 +1,5 @@
+extern crate mitte_core;
+
 pub mod types;
 
 pub mod aarch32;

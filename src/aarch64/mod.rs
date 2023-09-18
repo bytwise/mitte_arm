@@ -1,4 +1,5 @@
 pub mod types;
+pub mod fixup;
 
 pub use self::types::*;
 
