@@ -17,6 +17,9 @@ pub struct ZR;
 pub struct SP;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub enum NoReg31 {}
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Register32Common<W31> {
     W0, W1, W2, W3, W4, W5, W6, W7,
     W8, W9, W10, W11, W12, W13, W14, W15,
@@ -26,6 +29,7 @@ pub enum Register32Common<W31> {
 
 pub type Register32 = Register32Common<ZR>;
 pub type Register32OrSp = Register32Common<SP>;
+pub type Register32NoReg31 = Register32Common<NoReg31>;
 pub const WZR: Register32 = Register32Common::W31(ZR);
 pub const WSP: Register32OrSp = Register32Common::W31(SP);
 
@@ -110,6 +114,89 @@ impl<W31> Register32Common<W31> {
     }
 }
 
+impl From<Register32NoReg31> for Register32 {
+    #[inline]
+    fn from(reg: Register32NoReg31) -> Register32 {
+        use Register32Common::*;
+        match reg {
+            W0 => W0,
+            W1 => W1,
+            W2 => W2,
+            W3 => W3,
+            W4 => W4,
+            W5 => W5,
+            W6 => W6,
+            W7 => W7,
+            W8 => W8,
+            W9 => W9,
+            W10 => W10,
+            W11 => W11,
+            W12 => W12,
+            W13 => W13,
+            W14 => W14,
+            W15 => W15,
+            W16 => W16,
+            W17 => W17,
+            W18 => W18,
+            W19 => W19,
+            W20 => W20,
+            W21 => W21,
+            W22 => W22,
+            W23 => W23,
+            W24 => W24,
+            W25 => W25,
+            W26 => W26,
+            W27 => W27,
+            W28 => W28,
+            W29 => W29,
+            W30 => W30,
+            W31(w31) => match w31 {},
+        }
+    }
+}
+
+impl From<Register32NoReg31> for Register32OrSp {
+    #[inline]
+    fn from(reg: Register32NoReg31) -> Register32OrSp {
+        use Register32Common::*;
+        match reg {
+            W0 => W0,
+            W1 => W1,
+            W2 => W2,
+            W3 => W3,
+            W4 => W4,
+            W5 => W5,
+            W6 => W6,
+            W7 => W7,
+            W8 => W8,
+            W9 => W9,
+            W10 => W10,
+            W11 => W11,
+            W12 => W12,
+            W13 => W13,
+            W14 => W14,
+            W15 => W15,
+            W16 => W16,
+            W17 => W17,
+            W18 => W18,
+            W19 => W19,
+            W20 => W20,
+            W21 => W21,
+            W22 => W22,
+            W23 => W23,
+            W24 => W24,
+            W25 => W25,
+            W26 => W26,
+            W27 => W27,
+            W28 => W28,
+            W29 => W29,
+            W30 => W30,
+            W31(w31) => match w31 {},
+        }
+    }
+}
+
+
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum Register64Common<X31> {
     X0, X1, X2, X3, X4, X5, X6, X7,
@@ -120,6 +207,7 @@ pub enum Register64Common<X31> {
 
 pub type Register64 = Register64Common<ZR>;
 pub type Register64OrSp = Register64Common<SP>;
+pub type Register64NoReg31 = Register64Common<NoReg31>;
 pub const XZR: Register64 = Register64Common::X31(ZR);
 pub const XSP: Register64OrSp = Register64Common::X31(SP);
 
@@ -200,6 +288,88 @@ impl<X31> Register64Common<X31> {
             X29 => W29,
             X30 => W30,
             X31(x31) => W31(x31),
+        }
+    }
+}
+
+impl From<Register64NoReg31> for Register64 {
+    #[inline]
+    fn from(reg: Register64NoReg31) -> Register64 {
+        use Register64Common::*;
+        match reg {
+            X0 => X0,
+            X1 => X1,
+            X2 => X2,
+            X3 => X3,
+            X4 => X4,
+            X5 => X5,
+            X6 => X6,
+            X7 => X7,
+            X8 => X8,
+            X9 => X9,
+            X10 => X10,
+            X11 => X11,
+            X12 => X12,
+            X13 => X13,
+            X14 => X14,
+            X15 => X15,
+            X16 => X16,
+            X17 => X17,
+            X18 => X18,
+            X19 => X19,
+            X20 => X20,
+            X21 => X21,
+            X22 => X22,
+            X23 => X23,
+            X24 => X24,
+            X25 => X25,
+            X26 => X26,
+            X27 => X27,
+            X28 => X28,
+            X29 => X29,
+            X30 => X30,
+            X31(w31) => match w31 {},
+        }
+    }
+}
+
+impl From<Register64NoReg31> for Register64OrSp {
+    #[inline]
+    fn from(reg: Register64NoReg31) -> Register64OrSp {
+        use Register64Common::*;
+        match reg {
+            X0 => X0,
+            X1 => X1,
+            X2 => X2,
+            X3 => X3,
+            X4 => X4,
+            X5 => X5,
+            X6 => X6,
+            X7 => X7,
+            X8 => X8,
+            X9 => X9,
+            X10 => X10,
+            X11 => X11,
+            X12 => X12,
+            X13 => X13,
+            X14 => X14,
+            X15 => X15,
+            X16 => X16,
+            X17 => X17,
+            X18 => X18,
+            X19 => X19,
+            X20 => X20,
+            X21 => X21,
+            X22 => X22,
+            X23 => X23,
+            X24 => X24,
+            X25 => X25,
+            X26 => X26,
+            X27 => X27,
+            X28 => X28,
+            X29 => X29,
+            X30 => X30,
+            X31(w31) => match w31 {},
         }
     }
 }
