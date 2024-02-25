@@ -10,16 +10,16 @@ pub use crate::types::Shift;
 use crate::encoding::RegisterIndex;
 
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct ZR;
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct SP;
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub enum NoReg31 {}
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub enum Register32Common<W31> {
     W0, W1, W2, W3, W4, W5, W6, W7,
     W8, W9, W10, W11, W12, W13, W14, W15,
@@ -35,7 +35,7 @@ pub const WSP: Register32OrSp = Register32Common::W31(SP);
 
 impl<W31> Register32Common<W31> {
     #[inline]
-    pub fn index(&self) -> u8 {
+    pub fn index(&self) -> usize {
         use Register32Common::*;
         match *self {
             W0 => 0,
@@ -110,6 +110,47 @@ impl<W31> Register32Common<W31> {
             W29 => X29,
             W30 => X30,
             W31(w31) => X31(w31),
+        }
+    }
+}
+
+impl Register32Common<NoReg31> {
+    #[inline]
+    pub fn from_index(index: usize) -> Option<Register32Common<NoReg31>> {
+        use Register32Common::*;
+        match index {
+            0 => Some(W0),
+            1 => Some(W1),
+            2 => Some(W2),
+            3 => Some(W3),
+            4 => Some(W4),
+            5 => Some(W5),
+            6 => Some(W6),
+            7 => Some(W7),
+            8 => Some(W8),
+            9 => Some(W9),
+            10 => Some(W10),
+            11 => Some(W11),
+            12 => Some(W12),
+            13 => Some(W13),
+            14 => Some(W14),
+            15 => Some(W15),
+            16 => Some(W16),
+            17 => Some(W17),
+            18 => Some(W18),
+            19 => Some(W19),
+            20 => Some(W20),
+            21 => Some(W21),
+            22 => Some(W22),
+            23 => Some(W23),
+            24 => Some(W24),
+            25 => Some(W25),
+            26 => Some(W26),
+            27 => Some(W27),
+            28 => Some(W28),
+            29 => Some(W29),
+            30 => Some(W30),
+            _ => None
         }
     }
 }
@@ -197,7 +238,7 @@ impl From<Register32NoReg31> for Register32OrSp {
 }
 
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub enum Register64Common<X31> {
     X0, X1, X2, X3, X4, X5, X6, X7,
     X8, X9, X10, X11, X12, X13, X14, X15,
@@ -213,7 +254,7 @@ pub const XSP: Register64OrSp = Register64Common::X31(SP);
 
 impl<X31> Register64Common<X31> {
     #[inline]
-    pub fn index(&self) -> u8 {
+    pub fn index(&self) -> usize {
         use Register64Common::*;
         match *self {
             X0 => 0,
@@ -288,6 +329,47 @@ impl<X31> Register64Common<X31> {
             X29 => W29,
             X30 => W30,
             X31(x31) => W31(x31),
+        }
+    }
+}
+
+impl Register64Common<NoReg31> {
+    #[inline]
+    pub fn from_index(index: usize) -> Option<Register64Common<NoReg31>> {
+        use Register64Common::*;
+        match index {
+            0 => Some(X0),
+            1 => Some(X1),
+            2 => Some(X2),
+            3 => Some(X3),
+            4 => Some(X4),
+            5 => Some(X5),
+            6 => Some(X6),
+            7 => Some(X7),
+            8 => Some(X8),
+            9 => Some(X9),
+            10 => Some(X10),
+            11 => Some(X11),
+            12 => Some(X12),
+            13 => Some(X13),
+            14 => Some(X14),
+            15 => Some(X15),
+            16 => Some(X16),
+            17 => Some(X17),
+            18 => Some(X18),
+            19 => Some(X19),
+            20 => Some(X20),
+            21 => Some(X21),
+            22 => Some(X22),
+            23 => Some(X23),
+            24 => Some(X24),
+            25 => Some(X25),
+            26 => Some(X26),
+            27 => Some(X27),
+            28 => Some(X28),
+            29 => Some(X29),
+            30 => Some(X30),
+            _ => None
         }
     }
 }
@@ -378,14 +460,14 @@ impl From<Register64NoReg31> for Register64OrSp {
 impl<W31> From<Register32Common<W31>> for RegisterIndex {
     #[inline]
     fn from(reg: Register32Common<W31>) -> RegisterIndex {
-        RegisterIndex { index: reg.index().into() }
+        RegisterIndex { index: reg.index() as u32 }
     }
 }
 
 impl<X31> From<Register64Common<X31>> for RegisterIndex {
     #[inline]
     fn from(reg: Register64Common<X31>) -> RegisterIndex {
-        RegisterIndex { index: reg.index().into() }
+        RegisterIndex { index: reg.index() as u32 }
     }
 }
 

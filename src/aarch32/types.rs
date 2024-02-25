@@ -9,10 +9,36 @@ pub use crate::types::Label;
 pub use crate::types::Shift;
 
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub enum Register {
     R0, R1, R2, R3, R4, R5, R6, R7,
     R8, R9, R10, R11, R12, R13, R14, R15,
+}
+
+impl Register {
+    #[inline]
+    pub fn from_index(index: usize) -> Option<Register> {
+        use Register::*;
+        match index {
+            0 => Some(R0),
+            1 => Some(R1),
+            2 => Some(R2),
+            3 => Some(R3),
+            4 => Some(R4),
+            5 => Some(R5),
+            6 => Some(R6),
+            7 => Some(R7),
+            8 => Some(R8),
+            9 => Some(R9),
+            10 => Some(R10),
+            11 => Some(R11),
+            12 => Some(R12),
+            13 => Some(R13),
+            14 => Some(R14),
+            15 => Some(R15),
+            _ => None,
+        }
+    }
 }
 
 impl From<Register> for RegisterIndex {
@@ -25,7 +51,7 @@ impl From<Register> for RegisterIndex {
 }
 
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub enum RegisterPair {
     R0R1 = 0,
     R2R3 = 2,
