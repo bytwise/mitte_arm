@@ -5,7 +5,7 @@ authors = ["bytewise <bytewise@fastmail.com>"]
 edition = "2018"
 
 [dependencies]
-mitte_core = { git = "https://github.com/bytwise/mitte_core", rev = "09e54d1" }
+mitte_core = { git = "https://github.com/bytwise/mitte_core", rev = "a5bda09" }
 
 [dev-dependencies]
 capstone = "0.10.0"
