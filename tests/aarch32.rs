@@ -1910,19 +1910,7 @@ fn test_mov_imm() {
 
 #[test]
 fn test_mov_reg() {
-    test_disasm("mov", "r3, r4", a32::mov_reg(R3, R4, Shift::Lsl(0)));
-    test_disasm("lsr", "r3, r4, #5", a32::mov_reg(R3, R4, Shift::Lsr(5)));
-}
-
-#[test]
-fn test_mov_reg_rrx() {
-    test3_cond("rrx", a32::mov_reg_rrx::cond);
-}
-
-#[test]
-fn test_mov_reg_shifted_reg() {
-    test_disasm("lsl", "r3, r4, r0", a32::mov_reg_shifted_reg(R3, R4, Shift::Lsl(R0)));
-    test_disasm("lsr", "r3, r4, r5", a32::mov_reg_shifted_reg(R3, R4, Shift::Lsr(R5)));
+    test3_cond("mov", a32::mov_reg::cond);
 }
 
 #[test]
@@ -1933,19 +1921,7 @@ fn test_movs_imm() {
 
 #[test]
 fn test_movs_reg() {
-    test_disasm("movs", "r3, r4", a32::movs_reg(R3, R4, Shift::Lsl(0)));
-    test_disasm("lsrs", "r3, r4, #5", a32::movs_reg(R3, R4, Shift::Lsr(5)));
-}
-
-#[test]
-fn test_movs_reg_rrx() {
-    test3_cond("rrxs", a32::movs_reg_rrx::cond);
-}
-
-#[test]
-fn test_movs_reg_shifted_reg() {
-    test_disasm("lsls", "r3, r4, r0", a32::movs_reg_shifted_reg(R3, R4, Shift::Lsl(R0)));
-    test_disasm("lsrs", "r3, r4, r5", a32::movs_reg_shifted_reg(R3, R4, Shift::Lsr(R5)));
+    test3_cond("movs", a32::movs_reg::cond);
 }
 
 #[test]

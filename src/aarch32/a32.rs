@@ -382,20 +382,12 @@ pub trait Emit: EmitSlice {
         emit_mls_cond(cond: Condition, rd: Register, rn: Register, rm: Register, ra: Register) => mls::cond;
         emit_mov_imm(rd: Register, imm: impl Into<Const>) => mov_imm;
         emit_mov_imm_cond(cond: Condition, rd: Register, imm: impl Into<Const>) => mov_imm::cond;
-        emit_mov_reg(rd: Register, rm: Register, shift: Shift<u8>) => mov_reg;
-        emit_mov_reg_cond(cond: Condition, rd: Register, rm: Register, shift: Shift<u8>) => mov_reg::cond;
-        emit_mov_reg_rrx(rd: Register, rm: Register) => mov_reg_rrx;
-        emit_mov_reg_rrx_cond(cond: Condition, rd: Register, rm: Register) => mov_reg_rrx::cond;
-        emit_mov_reg_shifted_reg(rd: Register, rm: Register, shift: Shift<Register>) => mov_reg_shifted_reg;
-        emit_mov_reg_shifted_reg_cond(cond: Condition, rd: Register, rm: Register, shift: Shift<Register>) => mov_reg_shifted_reg::cond;
+        emit_mov_reg(rd: Register, rm: Register) => mov_reg;
+        emit_mov_reg_cond(cond: Condition, rd: Register, rm: Register) => mov_reg::cond;
         emit_movs_imm(rd: Register, imm: impl Into<Const>) => movs_imm;
         emit_movs_imm_cond(cond: Condition, rd: Register, imm: impl Into<Const>) => movs_imm::cond;
-        emit_movs_reg(rd: Register, rm: Register, shift: Shift<u8>) => movs_reg;
-        emit_movs_reg_cond(cond: Condition, rd: Register, rm: Register, shift: Shift<u8>) => movs_reg::cond;
-        emit_movs_reg_rrx(rd: Register, rm: Register) => movs_reg_rrx;
-        emit_movs_reg_rrx_cond(cond: Condition, rd: Register, rm: Register) => movs_reg_rrx::cond;
-        emit_movs_reg_shifted_reg(rd: Register, rm: Register, shift: Shift<Register>) => movs_reg_shifted_reg;
-        emit_movs_reg_shifted_reg_cond(cond: Condition, rd: Register, rm: Register, shift: Shift<Register>) => movs_reg_shifted_reg::cond;
+        emit_movs_reg(rd: Register, rm: Register) => movs_reg;
+        emit_movs_reg_cond(cond: Condition, rd: Register, rm: Register) => movs_reg::cond;
         emit_movt(rd: Register, imm16: u16) => movt;
         emit_movt_cond(cond: Condition, rd: Register, imm16: u16) => movt::cond;
         emit_movw(rd: Register, imm16: u16) => movw;
@@ -1210,13 +1202,19 @@ functions! {
     mlas#cond(rd: Register, rn: Register, rm: Register, ra: Register) => MLAS_A1;
     mls#cond(rd: Register, rn: Register, rm: Register, ra: Register) => MLS_A1;
     mov_imm#cond(rd: Register; imm: impl Into<Const>) => MOV_i_A1;
-    mov_reg#cond(rd: Register, rm: Register; shift: Shift<u8>) => MOV_r_A1;
-    mov_reg_rrx#cond(rd: Register, rm: Register) => MOV_r_A1_RRX;
-    mov_reg_shifted_reg#cond(rd: Register, rm: Register; shift: Shift<Register>) => MOV_rr_A1;
+    mov_reg#cond(rd: Register, rm: Register) => MOV_r_A1 {
+        rd: rd.into(),
+        rm: rm.into(),
+        stype: Shift::Lsl(0u8).ty().into(),
+        imm5: Shift::Lsl(0u8).amount().into(),
+    };
     movs_imm#cond(rd: Register; imm: impl Into<Const>) => MOVS_i_A1;
-    movs_reg#cond(rd: Register, rm: Register; shift: Shift<u8>) => MOVS_r_A1;
-    movs_reg_rrx#cond(rd: Register, rm: Register) => MOVS_r_A1_RRX;
-    movs_reg_shifted_reg#cond(rd: Register, rm: Register; shift: Shift<Register>) => MOVS_rr_A1;
+    movs_reg#cond(rd: Register, rm: Register) => MOVS_r_A1 {
+        rd: rd.into(),
+        rm: rm.into(),
+        stype: Shift::Lsl(0u8).ty().into(),
+        imm5: Shift::Lsl(0u8).amount().into(),
+    };
     movt#cond(rd: Register, imm16: u16) => MOVT_A1 {
         rd: rd.into(),
         imm4: (imm16 >> 12).into(),
